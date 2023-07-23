@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+body{
+  overflow: hidden;
+}
+::selection{
+  background: rgba(26,188,156,0.3);]
+}
+.container{
+  max-width: 500px;
+  padding: 0 20px;
+  margin: 80px auto;
+}
+.wrapper{
+  width: 100%;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+}
+.wrapper .title{
+  height: 90px;
+  background: #59ab6e;
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper form{
+  padding: 30px 25px 25px 25px;
+}
+.wrapper form .row{
+  height: 45px;
+  margin-bottom: 15px;
+  position: relative;
+}
+.wrapper form .row input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding-left: 15px;
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+form .row input:focus{
+  border-color: #59ab6e;
+  box-shadow: inset 0px 0px 1px 1px rgba(26,188,156,0.25);
+}
+form .row input::placeholder{
+  color:grey;
+}
+.wrapper form .pass{
+  margin: 0px 0 20px 0;
+  float: right;
+}
+.wrapper form .pass a{
+  color:grey;
+  font-size: 17px;
+  text-decoration: none;
+}
+.wrapper form .pass a:hover{
+  text-decoration: underline;
+}
+.wrapper form .button input{
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 0px;
+  background: #59ab6e;
+  border: 1px solid #59ab6e;
+  cursor: pointer;
+}
+form .button input:hover{
+  background: #006400;
+}
+.wrapper form .signup-link{
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+}
+.wrapper form .signup-link a{
+  color: #59ab6e;
+  text-decoration: none;
+}
+form .signup-link a:hover{
+  text-decoration: underline;
+}
+</style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+
+{% block body %}
+    <div class="container">
+      
+        <div class="wrapper">
+            <div class="title"><span>Sign up</span></div>
+            <form action="{% url 'register' %}" method="post">
+              {% csrf_token %}
+                <div class="row"> 
+                    <input type="text" name="First name" placeholder="First name*" required>
+                </div>
+                <div class="row"> 
+                    <input type="text"  name="Last name" placeholder="Last name*" required>
+                </div>
+                <div class="row">
+                  <input type="text"  name="Username" placeholder="Username" required>
+              </div>
+                <div class="row">
+                    <input type="email"  name="Email" placeholder="Email*" required>
+                </div>
+                <div class="row">
+                    <input type="password"  name="Password" placeholder="Password*" required>
+                </div>
+                <div class="row">
+                    <input type="password" name="Confirm Password" placeholder="Confirm Password*" required>
+                </div>
+                <div class="row button">
+                    <input type="submit" value="Sign up">
+                </div>
+                {% if message %}
+                <div>{{ message }}</div>
+                {% endif %}
+                <div class="pass"><a href="{% url 'login'%}">Already have an account? Sign in</a></div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+</html>

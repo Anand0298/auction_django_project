@@ -1,0 +1,146 @@
+{% load static %}
+{% static "./assets/img/" as baseUrl %}
+{% comment %} {%  static "img" as baseUrl %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Category</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static 'assets/img/apple-icon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="{% static 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+
+
+<nav class="navbar navbar-expand-lg navbar-light shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a class="navbar-brand text-success logo h1 align-self-center" href="">
+            AUCTION
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+            <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Active Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_list' %}">Categories</a>      
+                    </li>
+                    {% if user.is_authenticated %}
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'sell' %}">Sell products</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'watchlist' user.username %}">Watch List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'winnings' %}">Winnings</a>
+                    </li>
+                    
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">sign in</a>
+                    </li>
+
+                   {% endif %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<h1>Auctions</h1>
+<div class="name">
+    {% if user.is_authenticated %}
+        Signed in as <strong>{{ user.username }} </strong>.
+    {% else %}
+        Not signed in.
+    {% endif %}
+</div>
+
+
+{% block body %}
+<h2 >All Categories</h2>
+<div id="cat">
+    {% for prods in cat_list %}
+    <div class="card">
+        <a class="title" href="{% url 'category' prods.category %}">{{prods.category}}</a>
+    </div>  
+    {% endfor %}
+    </div>
+    <style>
+
+        h1{
+            text-align:center;
+            margin-top:2%;
+        }
+        .name{
+            text-align:center;
+        }
+
+        #cat{
+
+            margin-top: 4vw;
+            grid-gap: 2vw;
+            display:grid;
+            width: 40%;
+            margin-left: 30%;
+            grid-template-rows: repeat(auto,1fr);
+            grid-template-columns: 1fr;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+        }
+        h2{
+            text-align:center;
+            margin-top:3%;
+        }
+        .card{
+            display: grid;
+            grid-template-rows: repeat(auto,1fr);
+            grid-template-columns: 1fr;
+            width: 90%;
+            padding-top:10px;
+            padding-bottom:10px;
+            background-color: grey;
+        }
+
+        
+        img{
+                width: 100%;
+            }
+        
+        .title{
+            font-size: 2vw;
+            color:black;
+            text-decoration:none;
+        }
+        .title:hover{
+            color:white;
+        }
+
+    </style>
+    {% endblock %}
+

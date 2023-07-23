@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ausctio-Product Listing Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static 'assets/img/apple-icon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+<!--
+    
+TemplateMo 559 eCart Shop
+
+https://templatemo.com/tm-559-eCart-shop
+
+-->
+</head>
+
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
+                AUCTION
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Active Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_list'  %}">Categories</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'sell' %}">Sell products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}" >Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">sign in</a>
+                </li>
+                {% endif %}
+                </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Start Content -->
+     
+
+    {% block body %}
+    <div class="title_cat">
+        <a  >{{list.title}}</a><br>
+        <a >{{list.category}}</a>
+    </div>
+        {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+    <div id="activelist">
+        
+        <div id = "productinfo">
+        {% if list.image %}
+            <img src="{{ list.image }}" class="list_img">
+        {% else %}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1024px-No_image_3x4.svg.png" alt="No image Provided" class="list_img">
+        {% endif %}
+
+        <p class="desc">{{ list.desc }}</p>
+        <div class = "starting_bid"><a><a class="c_price">Present Bid: </a> Rs. {{ present_bid}}  </div>
+        <div class = "starting_bid"><a><a class="c_price">Listed By: </a> {{ list.user }}</div>
+        
+        
+        <form method="get" action = "{% url 'bid' %}">
+        <input name= "bid_amnt" placeholder = "Bid Amount" type = "number" min={{list.start_price}} step ="5000" >
+        <button class="btn btn-outline-primary" type = "submit" name = "list_d" value = {{ list.id }}>Bid Item</button>
+        </form>
+
+        <div class="bid_amnt">
+        <form method= "get" action = "{% url 'addwatchlist' %}">
+        <button class="btn btn-outline-primary" type = "submit" value = {{ list.id }} name = "listid" >Add to Watchlist</button>
+        </form>
+        </div>
+        </div>
+
+
+        <div id="commentsection">
+        <h3>Comments</h3>
+        <div id="commentbox">
+            <ul>
+            {% for comment in comments %}
+            <li><a class="comment"><a>{{ comment.user }} : {{comment.comment}}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <form method = "get" action ="{% url 'comments' %}">
+        <input required type = "text" placeholder = "Add Comment" name = "comment">
+        <button class="btn btn-outline-primary" type = "submit" value = {{ list.id }} name = "listid"> Comment </button>
+        </form>
+        <div class= "closebid">
+        {% if list.username == user.username %}
+        <form method= "get" action = "{% url 'winner' %}">
+        <button class="btn btn-outline-primary" type = "submit" value = {{ list.id }} name = "listid" >Close Bid</button>
+        </form>
+        {% endif %}
+        </div>
+        </div>
+
+
+    </div>
+
+    <style>
+
+    .closebid{
+        padding: 1vw;
+    }
+ 
+    
+    #activelist{
+        margin-top: 2vw;
+        grid-gap: 2vw;
+        display:grid;
+        width: 80%;
+        margin-left: 10%;
+        grid-template-rows: repeat(auto,1fr);
+        grid-template-columns: 1fr 0.5fr;
+        font-family: 'Nunito', sans-serif;
+    }
+    p{
+        margin-top: 1vw;
+    }
+    #commentsection{
+        
+        background-color: #F5F5F5;
+    
+    }
+    
+    .bid_amnt{
+        padding: 1vw;
+    }
+    
+    h3{
+        padding-top: 2vw;
+    }
+    
+    #commentbox{
+    text-align: left;
+    padding-top: 1vw;
+    background-color: white;
+    min-height: 300px;
+    margin: 1vw;
+    
+    }
+    
+    img{
+            width: 80%;
+        }
+    
+    .title_cat{
+        margin-left:25%;
+        color:black;
+        text-decoration:none;
+        font-size: 5vw;
+        margin-top:15px;
+        
+    
+    }
+    .c_price{
+        text-decoration:none;
+        color:black;
+        font-weight: bold;
+    
+    }
+    
+    .comment{
+       align-items : left;
+    }
+    
+    .starting_bid{
+    
+        padding-bottom: 1vw;
+    
+    }
+    </style>
+    {% endblock %}
+
+    <!-- Start Script -->
+    <script src="{% static 'assets/js/jquery-1.11.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/templatemo.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

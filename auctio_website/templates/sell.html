@@ -1,0 +1,118 @@
+{% block body %}
+<div class="container">
+    <div class="wrapper">
+       <div class="title"><span>Sell Products</span></div>
+       <form method="post">
+         {% csrf_token %}
+         <div class="row">
+             <input name="pro_name" placeholder='Title' required type='text'>
+         </div>
+         <div class="row">
+             <input name="category" placeholder="Category" required type="text">
+         </div>
+         <div class="row">
+             <input name="start_price" placeholder="Starting Bid" required type="number" min="1000">
+         </div>
+         <div class="row">
+             <textarea name='description' placeholder='Description' required type="text"></textarea>
+         </div>
+         <div class="row">
+             <input name="img_url" placeholder="Image_URL(OPTIONAL)" type="text">
+         </div>
+         <div class="row button">
+             <button type="Submit">Submit</button>
+         </div>
+    </form>
+</div>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins',sans-serif;
+      }
+      body{
+        overflow: hidden;
+      }
+      textarea{
+        width:100%;
+        height:100%;
+        border-color:grey;
+      }
+      .row button{
+        background-color:#59ab6e;
+        width:100%;
+        height:120%;
+        font-size:30px;
+        font-weight:600;
+        color:#fff;
+        cursor:pointer;
+      }
+      .row button:hover{
+        background-color:#006400
+      }
+      ::selection{
+        background: rgba(26,188,156,0.3);
+      }
+      .container{
+        max-width: 50%;
+        padding: 0 20px;
+        margin: 80px auto;
+      }
+      .wrapper{
+          width: 100%;
+          background: #fff;
+          border-radius: 5px;
+          box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+        }
+        .wrapper .title{
+          height: 90px;
+          background: #59ab6e;
+          border-radius: 5px 5px 0 0;
+          color: #fff;
+          font-size: 30px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .wrapper form{
+          padding: 30px 25px 25px 25px;
+        }
+        .wrapper form .row{
+          height: 45px;
+          margin-bottom: 15px;
+          position: relative;
+        }
+        .wrapper form .row input{
+          height: 100%;
+          width: 100%;
+          outline: none;
+          padding-left: 15px;
+          border-radius: 5px;
+          border: 1px solid lightgrey;
+          font-size: 16px;
+          transition: all 0.3s ease;
+        }
+        form .row input:focus{
+          border-color: #59ab6e;
+          box-shadow: inset 0px 0px 1px 1px rgba(26,188,156,0.25);
+        }
+        form .row input::placeholder{
+          color:grey;
+        }
+        .wrapper form .button input{
+          color: #fff;
+          font-size: 20px;
+          font-weight: 500;
+          padding-left: 0px;
+          background: #59ab6e;
+          border: 1px solid #59ab6e;
+          cursor: pointer;
+        }
+        form .button input:hover{
+          background: #006400;
+        }
+    </style>
+{% endblock %}

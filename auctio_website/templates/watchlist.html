@@ -1,0 +1,184 @@
+{% load static %}
+{% static "./assets/img/" as baseUrl %}
+{% comment %} {%  static "img" as baseUrl %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>eCart Shop-eCommerce</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static 'assets/img/apple-icon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="{% static 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+<!--
+    
+TemplateMo 559 eCart Shop
+
+https://templatemo.com/tm-559-eCart-shop
+
+-->
+</head>
+
+<body>
+    
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="">
+                AUCTION
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Active Listings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'category_list' %}">Categories</a>      
+                        </li>
+
+                        {% if user.is_authenticated %}
+
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'sell' %}">Sell products</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'watchlist' user.username %}">Watch List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'winnings' %}">Winnings</a>
+                        </li>
+                        
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">sign in</a>
+                        </li>
+
+                       {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+
+
+
+{% block body %}
+   <h2>Watch List</h2>
+      <div id="productinfo">
+        {% for prod in list_ %}
+        {% if prod.watch_list.bid_active == True %}
+        <div class="card">
+            <a class="title">{{prod.watch_list.title}}</a>
+            <a class="category">{{prod.watch_list.category}}</a>
+            {% if prod.watch_list.image %}
+            <img src="{{ prod.watch_list.image }}" class="list_img">
+            {% else %}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1024px-No_image_3x4.svg.png" alt="No image Provided" class="list_img">
+            {% endif %}
+            <a><a class="c_price">Current Price: </a> {{ prod.watch_list.start_price }} $ </a>
+            <a class="bid"href="{% url 'products' prod.watch_list.id %}">View Bid</a>
+        
+            <form action = "{% url 'deletewatch' %}">
+            <button type = "submit" value = {{ prod.id }} name = "listid" >Delete</button>
+            </form>
+
+            {% endif %}
+    </div>  
+    {% endfor %}
+    </div>
+    <style>
+
+      #productinfo{
+         margin-top: 4vw;
+         grid-gap: 2vw;
+         display:grid;
+         width: 90%;
+         margin-left: 5%;
+         grid-template-rows: repeat(auto,1fr);
+         grid-template-columns: 1fr 1fr 1fr;
+         font-family: 'Nunito', sans-serif;
+         text-align: center;
+     }
+     .bid{
+      margin-bottom:2%;
+     }
+     h2{
+      text-align:center;
+      margin-top:3%;
+     }
+     .card{
+         display: grid;
+         grid-template-rows: repeat(auto,1fr);
+         grid-template-columns: 1fr;
+         width: 90%;
+         margin-left: 5%;
+         margin-bottom:10%;
+     }
+     .category{
+         color:black;
+         text-decoration:none;
+         font-size: 2vw;
+         font-weight: bold;
+     }
+     .category:hover{
+      color:grey;
+     }
+     .c_price{
+         color:black;
+         text-decoration:none;
+         font-size: 2vw;
+         font-weight: bold;
+     }
+     .c_price:hover{
+         color:grey;
+     }
+     
+     img{
+             width: 100%;
+         }
+     
+     .title{
+         color:black;
+         text-decoration:none;
+         font-size: 2vw;
+         font-weight: bold;
+     }
+     .title:hover{
+      color:grey;
+     }
+     .c_price{
+         font-weight: bold;
+     }
+     button{
+         width: 100%;
+         margin-bottom:50px;
+     }
+     </style>
+     {% endblock %}
+     
+
+    
